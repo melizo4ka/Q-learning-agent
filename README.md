@@ -19,7 +19,7 @@ The epsilon-greedy policy balances exploration and exploitation during training.
 - With probability $\ epsilon $, the agent explores by choosing a random action.
 - With probability $\ 1 - epsilon $, the agent exploits by choosing the action with the highest Q-value for the current state (greedy action).
 
-Initially, $\ epsilon $ is high to encourage exploration. It gradually decreases over time to prioritize exploitation, enabling the agent to converge to an optimal policy.
+Initially, epsilon is high to encourage exploration. It gradually decreases over time to prioritize exploitation, enabling the agent to converge to an optimal policy.
 
 
 
