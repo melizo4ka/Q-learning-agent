@@ -3,9 +3,9 @@
 This project implements a grid-based reinforcement learning environment with Q-learning. The grid world is designed to train an agent to collect treasures while avoiding walls. The environment uses a graphical interface to visualize the agent's progress and rewards.
 In this project, the Q-learning algorithm is enhanced with the epsilon-greedy policy for action selection. The Q-value update rule is given by:
 
-\[
+$$\[
 Q(s, a) \leftarrow Q(s, a) + \beta \big( R + \alpha \max_{a'} Q(s', a') - Q(s, a) \big)
-\]
+\]$$
 
 Where:
 - \(Q(s, a)\): Q-value for state \(s\) and action \(a\).
