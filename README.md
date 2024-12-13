@@ -2,8 +2,6 @@
 
 This project implements a grid-based reinforcement learning environment with Q-learning. The grid world is designed to train an agent to collect treasures while avoiding walls. The environment uses a graphical interface to visualize the agent's progress and rewards.
 
----
-
 ## Features
 
 - **10x10 Grid World:** The environment consists of a 10x10 grid with cells containing treasures and walls.
@@ -13,17 +11,12 @@ This project implements a grid-based reinforcement learning environment with Q-l
 - **Visualization:** A graphical display shows the agent's actions and treasures collected.
 - **Performance Tracking:** Rewards per step are plotted at the end of training cycle using `matplotlib` to visualize training progress.
 
----
-
 ## Installation
 
 To use this project you need to install the required Python packages:
    ```bash
    pip install pygame matplotlib
    ```
-
----
-
 
 ### Controls and Parameters
 
@@ -39,8 +32,6 @@ To use this project you need to install the required Python packages:
   - `steps_per_epoch`: Number of steps per epoch (default is 30).
   - `max_moves_per_step`: Maximum moves allowed per step (default is 400).
 
----
-
 ## Code Structure
 
 - **`main.py`:** The main script to run the grid world simulation.
@@ -52,8 +43,6 @@ To use this project you need to install the required Python packages:
   - `generate_wall_segments`: Converts wall coordinates into renderable segments.
   - `is_valid_move`: Validates movement actions based on the grid and walls.
   - `random_start_position`: Generates a random initial position for the agent.
-
----
 
 ## Output
 
