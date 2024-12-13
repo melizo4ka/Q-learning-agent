@@ -2,7 +2,7 @@
 
 This project implements a grid-based reinforcement learning environment with Q-learning. The grid world is designed to train an agent to collect treasures while avoiding walls. The environment uses a graphical interface to visualize the agent's progress and rewards.
 
----
+--
 
 ## Features
 
