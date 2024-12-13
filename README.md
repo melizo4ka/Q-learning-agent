@@ -13,20 +13,20 @@ Where:
 - $\ R $: Reward obtained after taking action s in state s.
 - $\ alpha $: Discount factor.
 - s': Next state after taking action s.
-- $\ max_{a'} Q(s', a') $: Maximum Q-value for the next state $\ s' $ over all possible actions.
+- $\ max_{a'} Q(s', a') $: Maximum Q-value for the next state s' over all possible actions.
 
 The epsilon-greedy policy balances exploration and exploitation during training. At each step:
-- With probability \(\epsilon\), the agent explores by choosing a random action.
-- With probability \(1 - \epsilon\), the agent exploits by choosing the action with the highest Q-value for the current state (greedy action).
+- With probability $\ epsilon $, the agent explores by choosing a random action.
+- With probability $\ 1 - epsilon $, the agent exploits by choosing the action with the highest Q-value for the current state (greedy action).
 
-Initially, \(\epsilon\) is high to encourage exploration. It gradually decreases over time to prioritize exploitation, enabling the agent to converge to an optimal policy.
+Initially, $\ epsilon $ is high to encourage exploration. It gradually decreases over time to prioritize exploitation, enabling the agent to converge to an optimal policy.
 
 
 
 ## Features
 
 - **10x10 Grid World:** The environment consists of a 10x10 grid with cells containing treasures and walls.
-- **Q-Learning Agent:** The agent learns using Q-learning with configurable learning rate (`beta`) and discount factor (`alpha`).
+- **Q-Learning Agent:** The agent learns using Q-learning with configurable learning rate ($\ beta $) and discount factor ($\ alpha $).
 - **Treasure Collection:** The agent earns rewards for collecting treasures  (+10) and incurs penalties for movement (-1).
 - **Walls and Obstacles:** Movement is restricted by walls defined at before training.
 - **Visualization:** A graphical display shows the agent's actions and treasures collected.
