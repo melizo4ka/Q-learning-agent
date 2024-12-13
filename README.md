@@ -8,14 +8,12 @@ Q(s, a) \leftarrow Q(s, a) + \beta \big( R + \alpha \max_{a'} Q(s', a') - Q(s, a
 \$$
 
 Where:
-- $\
-  Q(s, a)
-  $: Q-value for state s and action a.
-- \(\beta\): Learning rate.
-- \(R\): Reward obtained after taking action \(a\) in state \(s\).
-- \(\alpha\): Discount factor.
-- \(s'\): Next state after taking action \(a\).
-- \(\max_{a'} Q(s', a')\): Maximum Q-value for the next state \(s'\) over all possible actions.
+- Q(s, a): Q-value for state s and action a.
+- beta: Learning rate.
+- R: Reward obtained after taking action s in state s.
+- alpha: Discount factor.
+- s': Next state after taking action s.
+- $\ max_{a'} Q(s', a') $: Maximum Q-value for the next state s' over all possible actions.
 
 The epsilon-greedy policy balances exploration and exploitation during training. At each step:
 - With probability \(\epsilon\), the agent explores by choosing a random action.
