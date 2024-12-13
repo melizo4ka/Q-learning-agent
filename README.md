@@ -8,7 +8,7 @@ Q(s, a) \leftarrow Q(s, a) + \beta \big( R + \alpha \max_{a'} Q(s', a') - Q(s, a
 \$$
 
 Where:
-- $\Q(s, a)\$: Q-value for state $\s\$ and action $\a\$.
+- $\Q(s, a)$: Q-value for state $\s$ and action $\a$.
 - \(\beta\): Learning rate.
 - \(R\): Reward obtained after taking action \(a\) in state \(s\).
 - \(\alpha\): Discount factor.
