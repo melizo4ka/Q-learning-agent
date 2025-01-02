@@ -100,7 +100,8 @@ def is_valid_move(current_position, next_position):
 
 
 class Agent:
-    def __init__(self, beta=0.6, alpha=0.95):
+    # beta 0.2 is good
+    def __init__(self, beta=0.2, alpha=0.95):
         self.actions = ["up", "down", "left", "right"]
         self.State = State()
         self.beta = beta  # learning rate
@@ -115,7 +116,7 @@ class Agent:
 
     def choose_action(self, epoch):
         n = random.uniform(0, 1)
-        epsilon = max(0.1, 1.0 - epoch * 0.01)
+        epsilon = max(0.1, 1.0 * (0.99 ** epoch))
         if n < epsilon:
             # exploration
             return random.choice(self.actions)
@@ -207,9 +208,6 @@ class GridWorldDisplay:
 
 
 def main():
-    total_epochs = 3
-    steps_per_epoch = 30
-    max_moves_per_step = 400
     print_q_table = False
 
     agent = Agent()
@@ -252,4 +250,8 @@ def main():
 
 
 if __name__ == "__main__":
+    total_epochs = 30
+    steps_per_epoch = 20
+    max_moves_per_step = 500
+
     main()
