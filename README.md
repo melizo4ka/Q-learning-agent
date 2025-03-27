@@ -8,7 +8,7 @@ Q(s, a) \leftarrow Q(s, a) + \beta \big( R + \alpha \max_{a'} Q(s', a') - Q(s, a
 \$$
 
 Where:
-- $\ Q(s, a) $: Q-value for state $\ s $ and action $\ a $.
+- $\ Q(s, a) $: Q-value for state s and action a.
 - $\ beta $: Learning rate.
 - $\ R $: Reward obtained after taking action s in state s.
 - $\ alpha $: Discount factor.
@@ -46,12 +46,12 @@ To use this project you need to install the required Python packages:
   - `TREASURE_POSITIONS`: Coordinates of treasures in the grid.
   - `WALLS`: List of horizontal and vertical walls defined by their start and end coordinates.
 - **Agent Learning:**
-  - `beta`: Learning rate for Q-learning (default is 0.6).
-  - `alpha`: Discount factor for future rewards (default is 0.95).
+  - `beta`: Learning rate for Q-learning (default is 0.35). The beta value will decay with decay factor of 0.015.
+  - `alpha`: Discount factor for future rewards (default is 0.90).
 - **Training Parameters (can be set by the user):**
-  - `total_epochs`: Number of training epochs (default is 30).
-  - `steps_per_epoch`: Number of steps per epoch (default is 30).
-  - `max_moves_per_step`: Maximum moves allowed per step (default is 400).
+  - `total_epochs`: Number of training epochs (default is 1.000).
+  - `steps_per_epoch`: Number of steps per epoch (default is 400).
+  - `max_moves_per_step`: Maximum moves allowed per step (default is 500).
 
 ## Code Structure
 
@@ -64,7 +64,8 @@ To use this project you need to install the required Python packages:
   - `generate_wall_segments`: Converts wall coordinates into renderable segments.
   - `is_valid_move`: Validates movement actions based on the grid and walls.
   - `random_start_position`: Generates a random initial position for the agent.
-
+  - `validate_agent`: Simulates movements of the agent with epsilon=0, so in a completely deterministic manner.
+    
 ## Output
 
 - A `pygame` window showing:
