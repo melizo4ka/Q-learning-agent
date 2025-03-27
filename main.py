@@ -51,6 +51,33 @@ def random_start_position():
     return position
 
 
+def validate_agent(agent, display, num_runs=5):
+    total_rewards = []
+    for run in range(num_runs):
+        agent.reset()
+        move_count = 0
+        finished = False
+
+        while move_count < max_moves_per_step and not finished:
+            pygame.display.set_caption(f"Validation. Run {run}")
+            display.draw(agent)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            action = agent.choose_action(epoch=0, epsilon=0)
+            agent.take_action(action)
+            reward = agent.State.give_reward()
+            agent.total_reward += reward
+            agent.State.collect_treasure()
+            finished = agent.State.is_end()
+            move_count += 1
+            pygame.time.delay(1)
+        total_rewards.append(agent.total_reward)
+    return sum(total_rewards) / len(total_rewards)
+
+
 class State:
     def __init__(self):
         self.state = random_start_position()
@@ -100,12 +127,12 @@ def is_valid_move(current_position, next_position):
 
 
 class Agent:
-    # beta 0.2 is good
-    def __init__(self, beta=0.2, alpha=0.95):
+    def __init__(self, initial_beta=0.35, alpha=0.90, decay_rate=0.015):
         self.actions = ["up", "down", "left", "right"]
         self.State = State()
-        self.beta = beta  # learning rate
+        self.initial_beta = initial_beta  # learning rate
         self.alpha = alpha  # discount factor
+        self.decay_rate = decay_rate  # for learning rate decay
         self.Q_values = {}
         self.isEnd = self.State.isEnd
         self.total_reward = 0
@@ -114,9 +141,13 @@ class Agent:
             for col in range(BOARD_COLS):
                 self.Q_values[(row, col)] = {action: 0 for action in self.actions}
 
-    def choose_action(self, epoch):
+    def update_beta(self, epoch):
+        return self.initial_beta / (1 + self.decay_rate * epoch)
+
+    def choose_action(self, epoch, epsilon=None):
+        if epsilon is None:
+            epsilon = max(0.1, 0.999 ** epoch)
         n = random.uniform(0, 1)
-        epsilon = max(0.1, 1.0 * (0.99 ** epoch))
         if n < epsilon:
             # exploration
             return random.choice(self.actions)
@@ -158,15 +189,16 @@ class Agent:
 
             self.State.collect_treasure()
             next_state = self.State.state
-            self.update_q_values(action, reward, next_state)
+            beta = self.update_beta(epoch)
+            self.update_q_values(action, reward, next_state, beta)
             self.State.is_end()
             return False
 
-    def update_q_values(self, action, reward, next_state):
+    def update_q_values(self, action, reward, next_state, beta):
         current_position = self.State.state
         next_max_q = max(self.Q_values[next_state].values())
         current_q_value = self.Q_values[current_position][action]
-        self.Q_values[current_position][action] = (current_q_value + self.beta *
+        self.Q_values[current_position][action] = (current_q_value + beta *
                                                    (reward + self.alpha * next_max_q - current_q_value))
 
     def print_q_table(self):
@@ -208,41 +240,56 @@ class GridWorldDisplay:
 
 
 def main():
-    print_q_table = False
-
     agent = Agent()
     display = GridWorldDisplay(WINDOW_SIZE)
     rewards_per_step = []
+    validation_rewards = []
+
+    show_training = False
 
     for epoch in range(1, total_epochs + 1):
+        # training phase
         for step in range(steps_per_epoch):
             agent.reset()
             move_count = 0
             finished = False
 
             while move_count < max_moves_per_step and not finished:
-                pygame.display.set_caption(f"Grid World. Epoch {epoch}, Step {step + 1}")
-                display.draw(agent)
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
+                if show_training:
+                    pygame.display.set_caption(f"Grid World. Epoch {epoch}, Step {step + 1}")
+                    display.draw(agent)
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
 
                 finished = agent.play_step(epoch)
                 move_count += 1
-                pygame.time.delay(1)
+                if show_training:
+                    pygame.time.delay(1)
             rewards_per_step.append(agent.total_reward)
-        if print_q_table:
-            agent.print_q_table()
+
+        # validation phase
+        if epoch % 250 == 0:
+            avg_reward = validate_agent(agent, display, num_runs=5)
+            print(f"Validation Average Reward of Epoch {epoch} : {avg_reward:.2f}")
+            validation_rewards.append(avg_reward)
 
     print("Training complete!")
     print("The Q-Table is: ")
     agent.print_q_table()
 
-    plt.plot(range(len(rewards_per_step)), rewards_per_step, marker='o')
-    plt.xlabel("Steps and Epochs")
-    plt.ylabel("Reward")
-    plt.title("Final Reward")
+    plt.plot(range(len(rewards_per_step)), rewards_per_step, marker=',')
+    plt.xlabel("Steps")
+    plt.ylabel("Final reward")
+    plt.title("Training")
+    plt.grid()
+    plt.show()
+
+    plt.plot(range(len(validation_rewards)), validation_rewards, marker=',')
+    plt.xlabel("Steps")
+    plt.ylabel("Final reward")
+    plt.title("Validation")
     plt.grid()
     plt.show()
 
@@ -250,8 +297,8 @@ def main():
 
 
 if __name__ == "__main__":
-    total_epochs = 30
-    steps_per_epoch = 20
+    total_epochs = 1000
+    steps_per_epoch = 400
     max_moves_per_step = 500
 
     main()
